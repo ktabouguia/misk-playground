@@ -10,5 +10,5 @@ To start the Exemplar service, run the following command:
 
 ```bash
 $ ./bin/activate-hermit
-$ gradle :misk:samples:exemplar:run
+$ gradle :run
 ```
