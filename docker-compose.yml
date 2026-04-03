@@ -1,0 +1,52 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: misk-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: exemplar_testing
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - misk-network
+
+  misk-service:
+    build: .
+    container_name: misk-playground
+    environment:
+      - JAVA_OPTS=-Xmx1g -XX:+UseG1GC
+    command: ["/app/bin/app", "/app/resources/exemplar-docker.yaml"]
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/exemplar-docker.yaml:/app/resources/exemplar-docker.yaml:ro
+    networks:
+      - misk-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  mysql_data:
+
+networks:
+  misk-network:
+    driver: bridge

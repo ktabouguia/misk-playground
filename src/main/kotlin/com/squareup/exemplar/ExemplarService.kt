@@ -35,6 +35,7 @@ fun application(): MiskApplication {
     ExemplarWebActionsModule(),
     ExemplarCronModule(),
     ExemplarGuiceBindingsModule(),
+    ExemplarPersistenceModule(config),
     MiskRealServiceModule(),
     MiskWebModule(config.web),
     PrometheusMetricsServiceModule(config.prometheus),

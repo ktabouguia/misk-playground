@@ -16,12 +16,16 @@ data_source_clusters:
     writer:
       type: MYSQL
       database: exemplar_testing
+      host: mysql
+      port: 3306
       username: root
-      password: ""
+      password: "rootpassword"
       migrations_resource: "classpath:/hibernate/migrations"
     reader:
       type: MYSQL
       database: exemplar_testing
+      host: mysql
+      port: 3306
       username: root
-      password: ""
+      password: "rootpassword"
       migrations_resource: "classpath:/hibernate/migrations"

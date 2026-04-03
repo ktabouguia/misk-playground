@@ -6,6 +6,10 @@ import misk.inject.KAbstractModule
 import misk.security.authz.*
 import misk.web.dashboard.AdminDashboardAccess
 
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FUNCTION)
+annotation class UserApiAccess
+
 class ExemplarAccessModule : KAbstractModule() {
   override fun configure() {
     install(AccessControlModule())
@@ -21,6 +25,12 @@ class ExemplarAccessModule : KAbstractModule() {
     multibind<AccessAnnotationEntry>().toInstance(
       AccessAnnotationEntry<SupportDashboardAccess>(
         capabilities = listOf("customer_support"))
+    )
+
+    // Give users access to the User API endpoints
+    multibind<AccessAnnotationEntry>().toInstance(
+      AccessAnnotationEntry<UserApiAccess>(
+        capabilities = listOf("users"))
     )
 
     // Setup authentication in the development environment

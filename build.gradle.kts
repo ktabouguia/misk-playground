@@ -13,6 +13,7 @@ application {
   mainClass.set(applicationMainClass)
 }
 
+
 dependencies {
   compileOnly(libs.findbugsJsr305)
   implementation(libs.guava)
@@ -48,6 +49,8 @@ dependencies {
   implementation(libs.miskTailwind)
   implementation(libs.miskTokens)
   implementation(libs.miskTesting)
+  implementation(libs.miskHibernate)
+  implementation(libs.mysql)
 
   testImplementation(libs.assertj)
   testImplementation(libs.awsDynamodb)
@@ -62,7 +65,6 @@ dependencies {
   testImplementation(libs.micrometerCore)
   testRuntimeOnly(libs.mysql)
   testImplementation(libs.okHttpMockWebServer)
-  testImplementation(libs.miskHibernate)
   testImplementation(libs.miskJdbc)
   testImplementation(libs.miskRateLimitingBucket4jDynamodbV1)
   testImplementation(libs.miskRateLimitingBucket4jMysql)

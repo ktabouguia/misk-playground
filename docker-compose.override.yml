@@ -1,0 +1,39 @@
+# Docker Compose override for development
+# This file is automatically loaded by docker-compose
+# It provides development-friendly settings
+
+services:
+  misk-service:
+    # Use local build for faster development cycles
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Mount source code for potential hot reloading (if implemented)
+    volumes:
+      - ./src/main/resources/exemplar-docker.yaml:/app/resources/exemplar-docker.yaml:ro
+      # Uncomment to mount logs directory for easier debugging
+      # - ./logs:/app/logs
+    environment:
+      # Development-friendly settings
+      - JAVA_OPTS=-Xmx512m -XX:+UseG1GC -Ddebug=true
+      - MISK_CONFIG_FILE=/app/resources/exemplar-docker.yaml
+      - LOG_LEVEL=DEBUG
+    # Add labels for easier identification
+    labels:
+      - "app=misk-playground"
+      - "env=development"
+
+  mysql:
+    # Add development labels
+    labels:
+      - "app=misk-playground"
+      - "service=database"
+      - "env=development"
+    # Uncomment to persist data across container restarts during development
+    # volumes:
+    #   - mysql_dev_data:/var/lib/mysql
+    #   - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+# Uncomment if you want persistent data during development
+# volumes:
+#   mysql_dev_data:
